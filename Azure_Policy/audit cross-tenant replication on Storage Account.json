@@ -1,0 +1,21 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Storage/storageAccounts"
+        },
+        {
+          "field": "Microsoft.Storage/storageAccounts/enableCrossTenantReplication",
+          "equals": "true"
+        }
+      ]
+    },
+    "then": {
+      "effect": "auditIfNotExists"
+    }
+  },
+  "parameters": {}
+}
