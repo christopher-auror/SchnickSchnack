@@ -6,6 +6,7 @@ $subscriptions = Get-AzSubscription
 
 # Loop through each subscription
 foreach ($subscription in $subscriptions) {
+  
   # Select subscription
   Select-AzSubscription -Subscription $subscription.Id
   
