@@ -1,6 +1,6 @@
 # Update a Storage account with AllowCrossTenantReplication
 
-$account = Set-AzStorageAccount -ResourceGroupName "myresourcegroup" -Name "mystorageaccount" -AllowCrossTenantReplication $false -EnableHttpsTrafficOnly $true
+$account = Set-AzStorageAccount -ResourceGroupName "devChristopher" -Name "testchristopher" -AllowCrossTenantReplication $false -EnableHttpsTrafficOnly $true
 
 $account.AllowCrossTenantReplication
 
