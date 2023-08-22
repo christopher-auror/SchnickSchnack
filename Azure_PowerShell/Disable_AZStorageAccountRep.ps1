@@ -1,5 +1,5 @@
 # Set the resource group name
-$rgName = "yourResourceGroupName"
+$rgName = "devChristopher"
 
 # Get the storage accounts in the specified resource group
 $storageAccounts = Get-AzStorageAccount -ResourceGroupName $rgName

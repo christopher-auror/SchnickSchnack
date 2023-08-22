@@ -1,5 +1,5 @@
 # Set the resource group name and minimum TLS version
-$rgName = "yourResourceGroupName"
+$rgName = "devChristopher"
 $minimumTlsVersion = "TLS1_2"
 
 # Get a list of all storage accounts in the resource group
