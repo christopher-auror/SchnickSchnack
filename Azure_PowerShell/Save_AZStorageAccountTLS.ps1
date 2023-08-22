@@ -9,4 +9,5 @@ $storageAccounts = Get-AzStorageAccount -ResourceGroupName $rgName
 foreach ($storageAccount in $storageAccounts) {
 	Set-AzStorageAccount -ResourceGroupName $rgName `
 	-Name $storageAccount.StorageAccountName `
-	-MinimumTlsVersion
+	-MinimumTlsVersion $minimumTlsVersion
+}
