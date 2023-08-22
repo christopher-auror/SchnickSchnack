@@ -1,24 +1,11 @@
-# Authenticate to Azure
-Connect-AzAccount
+$rgName = "<resource-group>"
 
-# Get all Azure subscriptions
-$subscriptions = Get-AzSubscription
+# Get the storage accounts in the specified resource group
+$storageAccounts = Get-AzStorageAccount -ResourceGroupName $rgName
 
-# Loop through each subscription
-foreach ($subscription in $subscriptions) {
-  
-  # Select subscription
-  Select-AzSubscription -Subscription $subscription.Id
-  
-  # Get all storage accounts in subscription
-  $storageAccounts = Get-AzStorageAccount
-  
-  # Loop through each storage account
-  foreach ($storageAccount in $storageAccounts) {
-	# Get replication properties
-	$replicationProps = Get-AzStorageAccountReplication -ResourceGroupName $storageAccount.ResourceGroupName -Name $storageAccount.StorageAccountName
-  
-	# Disable replication
-	Set-AzStorageAccountReplication -ResourceGroupName $storageAccount.ResourceGroupName -Name $storageAccount.StorageAccountName -Status Disabled -Location $replicationProps.Location
-  }
+# Loop through each storage account and set AllowCrossTenantReplication to "false"
+foreach ($account in $storageAccounts) {
+    Set-AzStorageAccount -ResourceGroupName $rgName `
+        -Name $account.StorageAccountName `
+        -AllowCrossTenantReplication $false
 }
