@@ -1,3 +1,4 @@
+# Set the resource group name
 $rgName = "<resource-group>"
 
 # Get the storage accounts in the specified resource group
