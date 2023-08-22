@@ -1,3 +1,5 @@
 {
-  "python.interpreter" : "\/usr\/bin\/python3"
+  "python.interpreter" : "\/usr\/bin\/python3",
+  "workspace.color" : 4,
+  "workspace.name" : "SchnickSchnack"
 }
