@@ -1,0 +1,17 @@
+{
+    "if": {
+        "allOf": [
+            {
+                "field": "type",
+                "equals": "Microsoft.Sql/servers/databases"
+            },
+            {
+                "field": "Microsoft.Sql/servers/databases/sku.name",
+                "notEquals": "Basic"
+            }
+        ]
+    },
+    "then": {
+        "effect": "deny"
+    }
+}
