@@ -1,17 +1,29 @@
 {
-    "if": {
-        "allOf": [
-            {
-                "field": "type",
-                "equals": "Microsoft.Sql/servers/databases"
+    "properties": {
+        "displayName": "Allow DTU SQL Databases Only",
+        "policyType": "Custom",
+        "mode": "All",
+        "description": "Ensures that only DTU SQL databases are deployed in the subscription.",
+        "metadata": {
+            "category": "SQL"
+        },
+        "parameters": {},
+        "policyRule": {
+            "if": {
+                "allOf": [
+                    {
+                        "field": "type",
+                        "equals": "Microsoft.Sql/servers/databases"
+                    },
+                    {
+                        "field": "Microsoft.Sql/servers/databases/sku.name",
+                        "notEquals": "Basic"
+                    }
+                ]
             },
-            {
-                "field": "Microsoft.Sql/servers/databases/sku.name",
-                "notEquals": "Basic"
+            "then": {
+                "effect": "deny"
             }
-        ]
-    },
-    "then": {
-        "effect": "deny"
+        }
     }
 }
