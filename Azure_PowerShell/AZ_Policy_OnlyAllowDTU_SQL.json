@@ -16,8 +16,8 @@
                         "equals": "Microsoft.Sql/servers/databases"
                     },
                     {
-                        "field": "Microsoft.Sql/servers/databases/sku.name",
-                        "notEquals": "Basic"
+                        "field": "Microsoft.Sql/servers/databases/sku.tier",
+                        "Equals": "GeneralPurpose, BusinessCritical, Hyperscale"
                     }
                 ]
             },
