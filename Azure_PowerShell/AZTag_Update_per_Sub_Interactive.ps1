@@ -7,6 +7,7 @@ $tags = @{
     'VantaContainsUserData'='true'
     'VantaOwner'='shahid.iqbal@auror.co'
     'VantaUserDataStored'='event data'
+    'VantaNonProd'='true'
 }
 Update-AzTag -ResourceId "/subscriptions/$SubscriptionID" -Tag $tags -Operation Merge
 

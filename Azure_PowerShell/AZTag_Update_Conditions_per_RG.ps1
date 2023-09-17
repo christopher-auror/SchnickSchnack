@@ -27,6 +27,7 @@ foreach ($resourceGroupName in $resourceGroupNames) {
                 'VantaContainsUserData'='true'
                 'VantaOwner'='shahid.iqbal@auror.co'
                 'VantaUserDataStored'='event data'
+                'VantaNonProd'='true'
             }
         }
         else {
@@ -34,6 +35,7 @@ foreach ($resourceGroupName in $resourceGroupNames) {
                 'VantaContainsUserData'='false'
                 'VantaOwner'='shahid.iqbal@auror.co'
                 'VantaUserDataStored'='event data'
+                'VantaNonProd'='true'
             }
         }
 
