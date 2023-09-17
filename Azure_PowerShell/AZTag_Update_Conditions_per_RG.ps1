@@ -24,18 +24,20 @@ foreach ($resourceGroupName in $resourceGroupNames) {
             $resourceType -eq "Microsoft.Sql/servers/databases" -or `
             $resourceType -eq "Microsoft.DocumentDB/databaseAccounts") {
             $tags = @{
-                'VantaContainsUserData'='true'
-                'VantaOwner'='shahid.iqbal@auror.co'
-                'VantaUserDataStored'='event data'
                 'VantaNonProd'='true'
+                'VantaOwner'='shahid.iqbal@auror.co'
+                'VantaContainsUserData'='true'
+                'VantaUserDataStored'='event data'
+                'VantaDescription'='Fawkes'
             }
         }
         else {
             $tags = @{
-                'VantaContainsUserData'='false'
-                'VantaOwner'='shahid.iqbal@auror.co'
-                'VantaUserDataStored'='event data'
                 'VantaNonProd'='true'
+                'VantaOwner'='shahid.iqbal@auror.co'
+                'VantaContainsUserData'='false'
+                'VantaUserDataStored'='event data'
+                'VantaDescription'='Fawkes'
             }
         }
 
