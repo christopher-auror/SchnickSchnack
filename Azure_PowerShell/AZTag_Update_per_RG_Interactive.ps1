@@ -11,9 +11,9 @@ $resourceGroup = Get-AzResourceGroup -Name $ResourceGroupName
 # Add the tag to the resource group
 $tags = @{
     'ContainsUserData'='true'
+    'NonProd'='true'
     'Owner'='shahid.iqbal@auror.co'
     'UserDataStored'='event data'
-    'NonProd'='true'
 }
 Update-AzTag -ResourceId $resourceGroup.ResourceId -Tag $tags -Operation Merge
 

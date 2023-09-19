@@ -5,9 +5,9 @@ Select-AzSubscription -SubscriptionID $SubscriptionID
 # Add Azure tags to the selected subscription
 $tags = @{
     'ContainsUserData'='true'
+    'NonProd'='true'
     'Owner'='shahid.iqbal@auror.co'
     'UserDataStored'='event data'
-    'NonProd'='true'
 }
 Update-AzTag -ResourceId "/subscriptions/$SubscriptionID" -Tag $tags -Operation Merge
 
