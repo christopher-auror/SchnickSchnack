@@ -12,11 +12,11 @@ $resources = Get-AzResource -ResourceGroupName $ResourceGroupName
 foreach ($resource in $resources) {
     # Set the tag based on the resource type
     $tags = @{
+        'ContainsUserData'='false'
+        'Description'='Fawkes'
         'NonProd'='true'
         'Owner'='shahid.iqbal@auror.co'
-        'ContainsUserData'='false'
         'UserDataStored'='event data'
-        'Description'='Fawkes'
     }
 
     if ($resource.ResourceType -match "Microsoft\.(Storage|Sql|DocumentDB)/") {
@@ -30,11 +30,11 @@ foreach ($resource in $resources) {
 # Set the tag for the resource group based on the resources it contains
 $containsUserData = $resources.ResourceType -match "Microsoft\.(Storage|Sql|DocumentDB)/"
 $tags = @{
+    'ContainsUserData'='false'
+    'Description'='Fawkes'
     'NonProd'='true'
     'Owner'='shahid.iqbal@auror.co'
-    'ContainsUserData'='false'
     'UserDataStored'='event data'
-    'Description'='Fawkes'
 }
 
 if ($containsUserData.Count -gt 0) {
