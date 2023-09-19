@@ -12,15 +12,15 @@ $resources = Get-AzResource -ResourceGroupName $ResourceGroupName
 foreach ($resource in $resources) {
     # Set the tag based on the resource type
     $tags = @{
-        'VantaNonProd'='true'
-        'VantaOwner'='shahid.iqbal@auror.co'
-        'VantaContainsUserData'='false'
-        'VantaUserDataStored'='event data'
-        'VantaDescription'='Fawkes'
+        'NonProd'='true'
+        'Owner'='shahid.iqbal@auror.co'
+        'ContainsUserData'='false'
+        'UserDataStored'='event data'
+        'Description'='Fawkes'
     }
 
     if ($resource.ResourceType -match "Microsoft\.(Storage|Sql|DocumentDB)/") {
-        $tags['VantaContainsUserData'] = 'true'
+        $tags['ContainsUserData'] = 'true'
     }
 
     # Update the tags for the current resource
@@ -30,15 +30,15 @@ foreach ($resource in $resources) {
 # Set the tag for the resource group based on the resources it contains
 $containsUserData = $resources.ResourceType -match "Microsoft\.(Storage|Sql|DocumentDB)/"
 $tags = @{
-    'VantaNonProd'='true'
-    'VantaOwner'='shahid.iqbal@auror.co'
-    'VantaContainsUserData'='false'
-    'VantaUserDataStored'='event data'
-    'VantaDescription'='Fawkes'
+    'NonProd'='true'
+    'Owner'='shahid.iqbal@auror.co'
+    'ContainsUserData'='false'
+    'UserDataStored'='event data'
+    'Description'='Fawkes'
 }
 
 if ($containsUserData.Count -gt 0) {
-    $tags['VantaContainsUserData'] = 'true'
+    $tags['ContainsUserData'] = 'true'
 }
 
 # Update the tags for the resource group
