@@ -3,7 +3,7 @@
         "displayName": "Allow DTU SQL Databases Only",
         "policyType": "Custom",
         "mode": "All",
-        "description": "Ensures that only DTU SQL databases are deployed in the subscription.",
+        "description": "Ensures that only DTU SQL databases are deployed in the subscription\nF-13819 Azure vCore SQL - prevent deployment in Dev/Test sub",
         "metadata": {
             "category": "SQL"
         },
@@ -17,7 +17,11 @@
                     },
                     {
                         "field": "Microsoft.Sql/servers/databases/sku.tier",
-                        "Equals": "GeneralPurpose, BusinessCritical, Hyperscale"
+                        "notEquals": "ElasticPool"
+                    },
+                    {
+                        "field": "Microsoft.Sql/servers/databases/sku.family",
+                        "notEquals": "vCore"
                     }
                 ]
             },
