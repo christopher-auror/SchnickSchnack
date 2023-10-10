@@ -1,33 +1,47 @@
 {
-    "properties": {
-        "displayName": "Allow DTU SQL Databases Only",
-        "policyType": "Custom",
-        "mode": "All",
-        "description": "Ensures that only DTU SQL databases are deployed in the subscription\nF-13819 Azure vCore SQL - prevent deployment in Dev/Test sub",
-        "metadata": {
-            "category": "SQL"
+    "mode": "All",
+    "policyRule": {
+        "if": {
+            "allOf": [
+                {
+                    "field": "type",
+                    "equals": "Microsoft.Sql/servers/databases"
+                },
+                {
+                    "allOf": [
+                        {
+                            "anyOf": [
+                                {
+                                    "field": "Microsoft.Sql/servers/databases/sku.tier",
+                                    "equals": "GeneralPurpose"
+                                },
+                                {
+                                    "field": "Microsoft.Sql/servers/databases/sku.tier",
+                                    "equals": "Hyperscale"
+                                },
+                                {
+                                    "field": "Microsoft.Sql/servers/databases/sku.tier",
+                                    "equals": "BusinessCritical"
+                                },
+                                {
+                                    "field": "Microsoft.Sql/servers/databases/sku.tier",
+                                    "equals": "Premium"
+                                }
+                            ]
+                        },
+                        {
+                            "not":{
+                                "field": "Microsoft.Sql/servers/databases/sku.capacity",
+                                "exists": true
+                            }
+                        }
+                    ]
+                }
+            ]
         },
-        "parameters": {},
-        "policyRule": {
-            "if": {
-                "allOf": [
-                    {
-                        "field": "type",
-                        "equals": "Microsoft.Sql/servers/databases"
-                    },
-                    {
-                        "field": "Microsoft.Sql/servers/databases/sku.tier",
-                        "notEquals": "ElasticPool"
-                    },
-                    {
-                        "field": "Microsoft.Sql/servers/databases/sku.family",
-                        "notEquals": "vCore"
-                    }
-                ]
-            },
-            "then": {
-                "effect": "deny"
-            }
+        "then": {
+            "effect": "deny"
         }
-    }
+    },
+    "parameters": {}
 }
