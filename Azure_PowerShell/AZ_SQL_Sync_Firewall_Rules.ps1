@@ -27,10 +27,24 @@ Connect-AzAccount -Identity
 Set-AzContext -SubscriptionId $SubscriptionId
 
 # Get all firewall rules from the source SQL server
-$firewallRules = Get-AzSqlServerFirewallRule -ServerName $SourceServerName -ResourceGroupName $SourceResourceGroupName 
+$sourceFirewallRules = Get-AzSqlServerFirewallRule -ServerName $SourceServerName -ResourceGroupName $SourceResourceGroupName 
 
-# Loop through each firewall rule
-foreach ($rule in $firewallRules) {
-    # Create the same firewall rule on the destination SQL server
-    New-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName -FirewallRuleName $rule.FirewallRuleName -StartIPAddress $rule.StartIpAddress -EndIPAddress $rule.EndIpAddress
+# Get all firewall rules from the destination SQL server
+$destFirewallRules = Get-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName 
+
+# Initialize a counter for new firewall rules
+$newRulesCount = 0
+
+# Loop through each firewall rule from the source SQL server
+foreach ($sourceRule in $sourceFirewallRules) {
+    # Check if the firewall rule already exists on the destination SQL server
+    $destRule = $destFirewallRules | Where-Object {$_.FirewallRuleName -eq $sourceRule.FirewallRuleName -and $_.StartIpAddress -eq $sourceRule.StartIpAddress -and $_.EndIpAddress -eq $sourceRule.EndIpAddress}
+    if (!$destRule) {
+        # Create the same firewall rule on the destination SQL server
+        New-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName -FirewallRuleName $sourceRule.FirewallRuleName -StartIPAddress $sourceRule.StartIpAddress -EndIPAddress $sourceRule.EndIpAddress
+        $newRulesCount++
+    }
 }
+
+# Output the number of new firewall rules added
+Write-Output "$newRulesCount new firewall rules added to $DestServerName."
