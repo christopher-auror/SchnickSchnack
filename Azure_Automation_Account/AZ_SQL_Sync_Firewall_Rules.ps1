@@ -36,21 +36,15 @@ try {
     # Initialize a counter for new firewall rules
     $newRulesCount = 0
 
-    # Initialize an array to hold the jobs for creating new firewall rules
-    $newRuleJobs = @()
-
     # Loop through each firewall rule from the source SQL server
     foreach ($sourceRule in $sourceFirewallRules) {
         # Check if the firewall rule already exists on the destination SQL server
         if (-not ($destFirewallRules | Where-Object {$_.StartIpAddress -eq $sourceRule.StartIpAddress -and $_.EndIpAddress -eq $sourceRule.EndIpAddress})) {
-            # Create the same firewall rule on the destination SQL server as a job
-            $newRuleJobs += New-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName -FirewallRuleName $sourceRule.FirewallRuleName -StartIPAddress $sourceRule.StartIpAddress -EndIPAddress $sourceRule.EndIpAddress -AsJob -ErrorAction Stop
+            # Create the same firewall rule on the destination SQL server
+            New-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName -FirewallRuleName $sourceRule.FirewallRuleName -StartIPAddress $sourceRule.StartIpAddress -EndIPAddress $sourceRule.EndIpAddress -ErrorAction Stop
             $newRulesCount++
         }
     }
-
-    # Wait for all new firewall rule jobs to complete
-    $newRuleJobs | Wait-Job | Out-Null
 
     # Output message if no new firewall rules were added
     if ($newRulesCount -eq 0) {
