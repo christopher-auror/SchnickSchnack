@@ -1,21 +1,21 @@
 param(
-    [Parameter(Mandatory=$True)]
+    [Parameter(Mandatory)]
     [string]
     $SubscriptionId,
 
-    [Parameter(Mandatory=$True)]
+    [Parameter(Mandatory)]
     [string]
     $SourceServerName,
 
-    [Parameter(Mandatory=$True)]
+    [Parameter(Mandatory)]
     [string]
     $SourceResourceGroupName,
 
-    [Parameter(Mandatory=$True)]
+    [Parameter(Mandatory)]
     [string]
     $DestServerName,
 
-    [Parameter(Mandatory=$True)]
+    [Parameter(Mandatory)]
     [string]
     $DestResourceGroupName
 )
@@ -38,13 +38,17 @@ $newRulesCount = 0
 # Loop through each firewall rule from the source SQL server
 foreach ($sourceRule in $sourceFirewallRules) {
     # Check if the firewall rule already exists on the destination SQL server
-    $destRule = $destFirewallRules | Where-Object {$_.FirewallRuleName -eq $sourceRule.FirewallRuleName -and $_.StartIpAddress -eq $sourceRule.StartIpAddress -and $_.EndIpAddress -eq $sourceRule.EndIpAddress}
-    if (!$destRule) {
+    if (-not ($destFirewallRules | Where-Object {$_.StartIpAddress -eq $sourceRule.StartIpAddress -and $_.EndIpAddress -eq $sourceRule.EndIpAddress})) {
         # Create the same firewall rule on the destination SQL server
         New-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName -FirewallRuleName $sourceRule.FirewallRuleName -StartIPAddress $sourceRule.StartIpAddress -EndIPAddress $sourceRule.EndIpAddress
         $newRulesCount++
     }
 }
 
-# Output the number of new firewall rules added
-Write-Output "$newRulesCount new firewall rules added to $DestServerName."
+# Output message if no new firewall rules were added
+if ($newRulesCount -eq 0) {
+    Write-Output "No new firewall rules were found"
+} else {
+    # Output the number of new firewall rules added to the destination SQL server and resource group
+    Write-Output "$newRulesCount new firewall rules added to $DestServerName in resource group $DestResourceGroupName."
+}
