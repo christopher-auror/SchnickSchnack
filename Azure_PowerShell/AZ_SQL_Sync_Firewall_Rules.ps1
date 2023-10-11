@@ -20,35 +20,39 @@ param(
     $DestResourceGroupName
 )
 
-# Connect to Azure with managed identity
-Connect-AzAccount -Identity
+try {
+    # Connect to Azure with managed identity
+    Connect-AzAccount -Identity -ErrorAction Stop
 
-# Set the active subscription
-Set-AzContext -SubscriptionId $SubscriptionId
+    # Set the active subscription
+    Set-AzContext -SubscriptionId $SubscriptionId -ErrorAction Stop
 
-# Get all firewall rules from the source SQL server
-$sourceFirewallRules = Get-AzSqlServerFirewallRule -ServerName $SourceServerName -ResourceGroupName $SourceResourceGroupName 
+    # Get all firewall rules from the source SQL server
+    $sourceFirewallRules = Get-AzSqlServerFirewallRule -ServerName $SourceServerName -ResourceGroupName $SourceResourceGroupName -ErrorAction Stop
 
-# Get all firewall rules from the destination SQL server
-$destFirewallRules = Get-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName 
+    # Get all firewall rules from the destination SQL server
+    $destFirewallRules = Get-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName -ErrorAction Stop
 
-# Initialize a counter for new firewall rules
-$newRulesCount = 0
+    # Initialize a counter for new firewall rules
+    $newRulesCount = 0
 
-# Loop through each firewall rule from the source SQL server
-foreach ($sourceRule in $sourceFirewallRules) {
-    # Check if the firewall rule already exists on the destination SQL server
-    if (-not ($destFirewallRules | Where-Object {$_.StartIpAddress -eq $sourceRule.StartIpAddress -and $_.EndIpAddress -eq $sourceRule.EndIpAddress})) {
-        # Create the same firewall rule on the destination SQL server
-        New-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName -FirewallRuleName $sourceRule.FirewallRuleName -StartIPAddress $sourceRule.StartIpAddress -EndIPAddress $sourceRule.EndIpAddress
-        $newRulesCount++
+    # Loop through each firewall rule from the source SQL server
+    foreach ($sourceRule in $sourceFirewallRules) {
+        # Check if the firewall rule already exists on the destination SQL server
+        if (-not ($destFirewallRules | Where-Object {$_.StartIpAddress -eq $sourceRule.StartIpAddress -and $_.EndIpAddress -eq $sourceRule.EndIpAddress})) {
+            # Create the same firewall rule on the destination SQL server
+            New-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName -StartIPAddress $sourceRule.StartIpAddress -EndIPAddress $sourceRule.EndIpAddress -ErrorAction Stop
+            $newRulesCount++
+        }
     }
-}
 
-# Output message if no new firewall rules were added
-if ($newRulesCount -eq 0) {
-    Write-Output "No new firewall rules were found"
-} else {
-    # Output the number of new firewall rules added to the destination SQL server and resource group
-    Write-Output "$newRulesCount new firewall rules added to $DestServerName in resource group $DestResourceGroupName."
+    # Output message if no new firewall rules were added
+    if ($newRulesCount -eq 0) {
+        Write-Output "No new firewall rules were found"
+    } else {
+        # Output the number of new firewall rules added to the destination SQL server and resource group
+        Write-Output "$newRulesCount new firewall rules added to $DestServerName in resource group $DestResourceGroupName."
+    }
+} catch {
+    Write-Error $_.Exception.Message
 }
