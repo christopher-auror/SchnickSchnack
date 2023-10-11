@@ -41,7 +41,7 @@ try {
         # Check if the firewall rule already exists on the destination SQL server
         if (-not ($destFirewallRules | Where-Object {$_.StartIpAddress -eq $sourceRule.StartIpAddress -and $_.EndIpAddress -eq $sourceRule.EndIpAddress})) {
             # Create the same firewall rule on the destination SQL server
-            New-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName -StartIPAddress $sourceRule.StartIpAddress -EndIPAddress $sourceRule.EndIpAddress -ErrorAction Stop
+            New-AzSqlServerFirewallRule -ServerName $DestServerName -ResourceGroupName $DestResourceGroupName -FirewallRuleName $sourceRule.FirewallRuleName -StartIPAddress $sourceRule.StartIpAddress -EndIPAddress $sourceRule.EndIpAddress -ErrorAction Stop
             $newRulesCount++
         }
     }
