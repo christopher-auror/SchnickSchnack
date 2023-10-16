@@ -1,4 +1,3 @@
-
 -- count of active SQL sessions
 SELECT COUNT(session_id) AS [Active Connections] FROM sys.dm_exec_sessions
 
