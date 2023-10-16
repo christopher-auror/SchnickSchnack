@@ -18,5 +18,9 @@ $result = foreach($storageAccount in $storageAccounts)
     }
 }
 
-# Export results in a CSV file
-$result | Export-Csv -Path "$HOME/Downloads/storagedetails_Sub.csv" -Encoding UTF8 -NoTypeInformation
+# Add date and timestamp to the CSV file name
+$dateTime = Get-Date -Format "yyyy_MM_dd_HHmm"
+$csvFileName = "storagedetails_Sub_$dateTime.csv"
+
+# Export results in a CSV file with the updated file name
+$result | Export-Csv -Path "$HOME/Downloads/$csvFileName" -Encoding UTF8 -NoTypeInformation
