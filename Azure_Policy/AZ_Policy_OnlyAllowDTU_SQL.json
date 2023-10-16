@@ -28,18 +28,6 @@
                                     "equals": "Premium"
                                 }
                             ]
-                        },
-                        {
-                            "allOf": [
-                                {
-                                    "field": "Microsoft.Sql/servers/databases/sku.tier",
-                                    "equals": "GeneralPurpose"
-                                },
-                                {
-                                    "field": "Microsoft.Sql/servers/databases/sku.capacity",
-                                    "lessOrEquals": 2
-                                }
-                            ]
                         }
                     ]
                 }
