@@ -9,12 +9,12 @@ $storageAccounts = Get-AzStorageAccount
 $result = foreach($storageAccount in $storageAccounts)
 {
     [PSCustomObject]@{
+        SubscriptionID = $subscriptionId
+        RGName = $storageAccount.ResourceGroupName
         Name = $storageAccount.StorageAccountName
         Location = $storageAccount.Location
         Kind = $storageAccount.Kind
         Replication = $storageAccount.Sku.name
-        RGName = $storageAccount.ResourceGroupName
-        SubscriptionID = $subscriptionId
     }
 }
 
