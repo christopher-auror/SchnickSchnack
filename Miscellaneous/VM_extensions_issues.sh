@@ -11,7 +11,7 @@ az vm extension image list-names --publisher Microsoft.Azure.ChangeTrackingAndIn
 az vm extension delete -g REMOTEACCESS --vm-name prod-aueast-gateway-vm -n ChangeTracking-Linux
 
 # Add an extensions
-az vm extension set -n extName --publisher publisher --vm-name prod-aueast-gateway-vm -g REMOTEACCESS --enable-auto-upgrade true
+az vm extension set -n ChangeTracking-Linux --publisher Microsoft.Azure.ChangeTrackingAndInventory --vm-name prod-aueast-gateway-vm -g REMOTEACCESS --enable-auto-upgrade false
 
 # Extensions that aren't working
 publisher: Microsoft.Azure.ActiveDirectory -> name: AADSSHLoginForLinux
