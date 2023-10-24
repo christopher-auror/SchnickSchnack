@@ -37,7 +37,14 @@ try {
     $csvFileName = "storagedetails_Sub_$dateTime.csv"
 
     # Export results in a CSV file with the updated file name to the specified storage account and container
-    $result | Export-Csv -Path "https://$StorageAccountName.blob.core.windows.net/$ContainerName/$csvFileName" -Encoding UTF8 -NoTypeInformation
+    $result | Export-Csv -Path $csvFileName -Encoding UTF8 -NoTypeInformation
+
+    # Get the storage context
+    $storageAccountKey = "pD5PC/lKluOi37Bq1t/GRPVj9czuZQn7SWLnwDVINgyRogQACrpbrY9EtLxwEcIv7sUZPt7EDt9S+ASt68IJmQ=="
+    $storageContext = New-AzStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $storageAccountKey
+
+    # Upload the CSV file to the Azure Blob Container specified in the parameter section
+    Set-AzStorageBlobContent -File $csvFileName -Container $ContainerName -Blob $csvFileName -Context $storageContext
 }
 catch {
     Write-Error $_.Exception.Message
