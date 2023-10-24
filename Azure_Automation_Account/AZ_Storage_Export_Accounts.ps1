@@ -40,7 +40,7 @@ try {
     $result | Export-Csv -Path $csvFileName -Encoding UTF8 -NoTypeInformation
 
     # Get the storage context
-    $storageAccountKey = "pD5PC/lKluOi37Bq1t/GRPVj9czuZQn7SWLnwDVINgyRogQACrpbrY9EtLxwEcIv7sUZPt7EDt9S+ASt68IJmQ=="
+    $storageAccountKey = "ThisIsAbsoluteFake"
     $storageContext = New-AzStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $storageAccountKey
 
     # Upload the CSV file to the Azure Blob Container specified in the parameter section
