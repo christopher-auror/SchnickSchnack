@@ -6,7 +6,10 @@ param (
     [string]$StorageAccountName,
     
     [Parameter(Mandatory = $true)]
-    [string]$ContainerName
+    [string]$ContainerName,
+
+    [Parameter(Mandatory=$true)]
+    [string]$StorageAccountKey
 )
 
 try {
@@ -40,7 +43,6 @@ try {
     $result | Export-Csv -Path $csvFileName -Encoding UTF8 -NoTypeInformation
 
     # Get the storage context
-    $storageAccountKey = "ThisIsAbsoluteFake"
     $storageContext = New-AzStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $storageAccountKey
 
     # Upload the CSV file to the Azure Blob Container specified in the parameter section
