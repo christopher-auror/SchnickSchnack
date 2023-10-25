@@ -51,6 +51,9 @@ try {
         # Import the previous CSV file
         $previousResult = Import-Csv -Path $previousCsvFileName
 
+        # Delete the previously downloaded CSV file
+        Remove-Item -Path $previousCsvFileName
+
         # Compare the two versions and output the result
         $changes = $previousResult | Compare-Object -ReferenceObject $currentResult -Property RGName, Name, Location, Kind, Replication -PassThru
         if ($changes) {
