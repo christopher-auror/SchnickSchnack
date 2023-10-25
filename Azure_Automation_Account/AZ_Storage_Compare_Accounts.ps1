@@ -71,7 +71,17 @@ try {
             Write-Output "No changes found in the Azure Storage Account(s)."
         }
     } else {
-        Write-Output "No previous CSV file found in the container."
+        # Add date and timestamp to the CSV file name
+        $dateTime = Get-Date -Format "yyyy_MM_dd_HHmm"
+        $csvFileName = "storagedetails_Sub_$dateTime.csv"
+
+        # Export results in a CSV file with the updated file name to the specified storage account and container
+        $currentResult | Export-Csv -Path $csvFileName -Encoding UTF8 -NoTypeInformation
+
+        # Upload the CSV file to the Azure Blob Container specified in the parameter section
+        Set-AzStorageBlobContent -File $csvFileName -Container $ContainerName -Blob $csvFileName -Context $storageContext        
+        
+        Write-Output "No previous CSV file found in the container. Created new CSV file with current Azure Storage Account details."
     }
 } catch {
     Write-Error $_.Exception.Message
