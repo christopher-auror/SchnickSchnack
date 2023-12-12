@@ -1,6 +1,9 @@
 # Readme
 
-## Pulumi - documentation
+## Pulumi - Resource Provider
+https://github.com/pulumi/pulumi-pagerduty
+
+## Pulumi - Documentation
 https://www.pulumi.com/registry/packages/pagerduty/
 
 ## Inoffical PagerDuty CLI - User Guide
