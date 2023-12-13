@@ -1,7 +1,16 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as pagerduty from "@pulumi/pagerduty";
 
-const exampleUser = new pagerduty.User("exampleUser", {email: "125.greenholt.earline@graham.name"}); // generates a new licensed user
+const user = new pagerduty.User("my-user", {
+    name: "John Doe",                     // Specify the name of the user.
+    email: "johndoe@example.com",        // Specify the email of the user.
+    role: "admin",                       // Set the role as 'admin'.
+    jobTitle: "DevOps Engineer",         // Specify the job title.
+    timeZone: "America/Los_Angeles",     // Specify the timezone.
+    color: "purple",                     // The color chosen for this user on schedules and more.
+    description: "Managed by Pulumi"     // A description to indicate the user management.
+});
+
 const foo = new pagerduty.EscalationPolicy("foo", { //generates a new escalation policy
     numLoops: 2,
     rules: [{
