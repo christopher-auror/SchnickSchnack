@@ -1,6 +1,5 @@
 # Readme
 
-## Pulumi - documentation
 ## Pulumi - Resource Provider
 https://github.com/pulumi/pulumi-pagerduty
 
