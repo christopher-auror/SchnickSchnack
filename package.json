@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "@pulumi/pagerduty": "^4.3.0"
-  }
-}
