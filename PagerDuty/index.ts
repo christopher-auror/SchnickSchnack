@@ -37,6 +37,3 @@ let service = new pagerduty.Service("my-service", {
     acknowledgementTimeout: "1800", // Auto escalate incidents after 30 minutes
     name: "My Service" // Human friendly name
 });
-
-// Confirm the ID of the service created for future reference if needed
-export const serviceId = service.id;
