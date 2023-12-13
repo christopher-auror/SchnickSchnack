@@ -11,3 +11,6 @@ const foo = new pagerduty.EscalationPolicy("foo", {
         targets: [{
             type: "user_reference",
             id: exampleUser.id,
+        }]
+    }]
+});
