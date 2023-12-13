@@ -19,7 +19,7 @@ const team = new pagerduty.Team("team", {
 });
 
 // Create a new escalation policy
-const policy = new pagerduty.EscalationPolicy("foo", {
+const policy = new pagerduty.EscalationPolicy("Auror-Default", {
     numLoops: 2,
     rules: [{
         escalationDelayInMinutes: 10,
