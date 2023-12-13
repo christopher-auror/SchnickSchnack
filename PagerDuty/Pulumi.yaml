@@ -1,0 +1,3 @@
+name: PagerDuty
+runtime: nodejs
+description: PagerDuty Pulumi program
