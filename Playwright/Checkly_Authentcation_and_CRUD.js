@@ -1,5 +1,6 @@
 /**
- * This check will check the functionality of the Checkly check groups API  - It will create, get, update and delete a group.
+ * This check will check the functionality of the Checkly check groups API
+ * It will create, get, update and delete a group
  * The Checkly API documentation is available here: https://developers.checklyhq.com/reference
  */
 
@@ -8,7 +9,7 @@ import { test, expect } from "@playwright/test"
 const baseUrl = "https://api.checklyhq.com/v1"
 
 /**
- * The Checkly Public API uses API keys to authenticate requests.
+ * The Checkly Public API uses API keys to authenticate requests
  * You can generate a key for your account here: https://app.checklyhq.com/settings/user/api-keys
  */
 const headers = {
