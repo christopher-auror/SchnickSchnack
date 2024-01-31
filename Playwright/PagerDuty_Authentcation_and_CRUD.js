@@ -8,6 +8,11 @@ import { test, expect } from "@playwright/test"
 
 const baseUrl = "https://api.pagerduty.com"
 
+/**
+ * The PagerDuty Public API uses API keys to authenticate requests
+ * You can generate a key for your account here: https://support.pagerduty.com/docs/api-access-keys#section-generating-a-general-access-rest-api-key
+ */
+
 const headers = {
   Authorization: `Token token=${process.env.PAGERDUTY_API_KEY}`,
   "Content-Type": "application/json",
