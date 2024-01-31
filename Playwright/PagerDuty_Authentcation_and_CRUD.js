@@ -31,7 +31,7 @@ test("CRUD Escalation Policy in PagerDuty API", async ({ request }) => {
               escalation_delay_in_minutes: 30,
               targets: [
                 {
-                  id: process.env.PAGERDUTY_USER_ID
+                  id: process.env.PAGERDUTY_USER_ID,
                   type: "user_reference"
                 }
               ]
