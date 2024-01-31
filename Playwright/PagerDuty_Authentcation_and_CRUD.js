@@ -1,5 +1,6 @@
 /**
- * This check will check the functionality of the PagerDuty API  - It will create, get, update and delete an escalation policy.
+ * This check will check the functionality of the PagerDuty API
+ * It will create, get, update and delete an escalation policy
  * The PagerDuty API documentation is available here: https://developer.pagerduty.com/api-reference/
  */
 
@@ -39,7 +40,7 @@ test("CRUD Escalation Policy in PagerDuty API", async ({ request }) => {
           ],
           num_loops: 2,
           teams: [],
-          description: "This is a new escalation policy."
+          description: "This is a new escalation policy"
         }
       }),
       headers,
@@ -66,7 +67,7 @@ test("CRUD Escalation Policy in PagerDuty API", async ({ request }) => {
         escalation_policy: {
           type: "escalation_policy",
           name: "Updated Escalation Policy",
-          description: "This is an updated escalation policy."
+          description: "This is an updated escalation policy"
         }
       }),
       headers,
