@@ -1,10 +1,3 @@
-# All kind of stuff - Christopher
+# All kind of stuff that Christopher crafted
 
-## Playground
-
-Drop some random files in here
-
-TestDocument
-sdf
-sd
-fsd
+## Folders to store different snippets
