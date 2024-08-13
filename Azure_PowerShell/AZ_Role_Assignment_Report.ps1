@@ -1,19 +1,18 @@
 #Login Azure Account
 # TODO uncomment - Add-AzAccount
-# still has some errors
 
 #Log Analytics query for retrieving Role Assignment addition activities for the past 2 days
-    $addqr = 'AzureActivity
-    | where TimeGenerated > ago(2d)
-    | where CategoryValue =~ "Administrative" and  OperationNameValue =~ "Microsoft.Authorization/roleAssignments/write" and ActivityStatusValue =~ "Start"
-    | extend RoleDefinition = extractjson("$.Properties.RoleDefinitionId",tostring(Properties_d.requestbody),typeof(string))
-    | extend PrincipalId = extractjson("$.Properties.PrincipalId",tostring(Properties_d.requestbody),typeof(string))
-    | extend PrincipalType = extractjson("$.Properties.PrincipalType",tostring(Properties_d.requestbody),typeof(string))
-    | extend Scope = extractjson("$.Properties.Scope",tostring(Properties_d.requestbody),typeof(string))
-    | extend RoleId = split(RoleDefinition,"/")
-    | extend InitiatedBy = Caller
-    | extend Operation = split(OperationNameValue,"/")
-    | project TimeGenerated,InitiatedBy,Scope,PrincipalId,PrincipalType,RoleID=RoleId[4],Operation= Operation[2]'
+$addqr = 'AzureActivity
+| where TimeGenerated > ago(2d)
+| where CategoryValue =~ "Administrative" and  OperationNameValue =~ "Microsoft.Authorization/roleAssignments/write" and ActivityStatusValue =~ "Start"
+| extend RoleDefinition = extractjson("$.Properties.RoleDefinitionId",tostring(Properties_d.requestbody),typeof(string))
+| extend PrincipalId = extractjson("$.Properties.PrincipalId",tostring(Properties_d.requestbody),typeof(string))
+| extend PrincipalType = extractjson("$.Properties.PrincipalType",tostring(Properties_d.requestbody),typeof(string))
+| extend Scope = extractjson("$.Properties.Scope",tostring(Properties_d.requestbody),typeof(string))
+| extend RoleId = split(RoleDefinition,"/")
+| extend InitiatedBy = Caller
+| extend Operation = split(OperationNameValue,"/")
+| project TimeGenerated,InitiatedBy,Scope,PrincipalId,PrincipalType,RoleID=RoleId[4],Operation= Operation[2]'
 
 
 #Log Analytics query for retrieving Role Assignment removal activities for the past 2 days
@@ -40,27 +39,22 @@ $rmqrs = $rmqueryResults.Results
 #For each remove query result find user/group name and role name to append into the CSV report
 foreach ($qr in $rmqrs)
 {
-    $rd = Get-AzRoleDefinition -Id $qr.RoleID
-    if ($qr.PrincipalType -eq 'User' -and $qr.PrincipalId) {     
-        $prncpl = Get-AzADUser -ObjectId $qr.PrincipalId
-    }
-    elseif ($qr.PrincipalType -eq 'Group' -and $qr.PrincipalId) {
-        $prncpl = Get-AzADGroup -ObjectId $qr.PrincipalId
-    }
-    elseif ($qr.PrincipalType -eq 'ServicePrincipal' -and $qr.PrincipalId) {
-        $prncpl = Get-AzADServicePrincipal -ObjectId $qr.PrincipalId
-    }
-    else {
-        $prncpl = $null
-    }
+$rd = Get-AzRoleDefinition -Id $qr.RoleID
+if($qr.PrincipalType -eq 'User')
+{     
+    $prncpl = Get-AzADUser -ObjectId $qr.PrincipalId
+}
+elseif($qr.PrincipalType -eq 'Group'){
+    $prncpl = Get-AzADGroup -ObjectId $qr.PrincipalId
+}
+else{
+    $prncpl = Get-AzADServicePrincipal -ObjectId $qr.PrincipalId
+}
+$qr | Add-Member -MemberType NoteProperty -Name 'Role' -Value $rd.Name
+$qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.DisplayName
 
-    if ($prncpl) {
-        $qr | Add-Member -MemberType NoteProperty -Name 'Role' -Value $rd.Name
-        $qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.DisplayName
-
-        #Replace with appropriate path
-        $qr | Export-Csv -Path ".\Auror-Az-Role-Assignment-Report.csv" -NoTypeInformation -Append
-    }
+#Replace with appropriate path
+$qr | Export-Csv -Path ".\Auror-Az-Role-Assignment-Report.csv" -NoTypeInformation -Append
 }
 
 # End of Script
