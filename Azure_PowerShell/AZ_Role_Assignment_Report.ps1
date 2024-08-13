@@ -1,6 +1,6 @@
 #Login Azure Account
-# Add-AzAccount
-# TODO still has some errors!!!
+# TODO uncomment - Add-AzAccount
+# still has some errors
 
 #Log Analytics query for retrieving Role Assignment addition activities for the past 2 days
     $addqr = 'AzureActivity
