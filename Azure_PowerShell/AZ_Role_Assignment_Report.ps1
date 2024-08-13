@@ -1,5 +1,5 @@
 #Login Azure Account
-Add-AzAccount
+# Add-AzAccount
 # TODO still has some errors!!!
 
 #Log Analytics query for retrieving Role Assignment addition activities for the past 2 days
@@ -61,22 +61,27 @@ $qr | Export-Csv -Path ".FileName.csv" -NoTypeInformation -Append
 #For each remove query result find user/group name and role name to append into the CSV report
 foreach ($qr in $rmqrs)
 {
-$rd = Get-AzRoleDefinition -Id $qr.RoleID
-if($qr.PrincipalType -eq 'User')
-    {     
+    $rd = Get-AzRoleDefinition -Id $qr.RoleID
+    if ($qr.PrincipalType -eq 'User' -and $qr.PrincipalId) {     
         $prncpl = Get-AzADUser -ObjectId $qr.PrincipalId
     }
-elseif($qr.PrincipalType -eq 'Group'){
+    elseif ($qr.PrincipalType -eq 'Group' -and $qr.PrincipalId) {
         $prncpl = Get-AzADGroup -ObjectId $qr.PrincipalId
     }
-else{
+    elseif ($qr.PrincipalType -eq 'ServicePrincipal' -and $qr.PrincipalId) {
         $prncpl = Get-AzADServicePrincipal -ObjectId $qr.PrincipalId
     }
-$qr | Add-Member -MemberType NoteProperty -Name 'Role' -Value $rd.Name
-$qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.DisplayName
+    else {
+        $prncpl = $null
+    }
 
-#Replace with appropriate path
-$qr | Export-Csv -Path ".\Auror-Az-Role-Assignment-Report.csv" -NoTypeInformation -Append
+    if ($prncpl) {
+        $qr | Add-Member -MemberType NoteProperty -Name 'Role' -Value $rd.Name
+        $qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.DisplayName
+
+        #Replace with appropriate path
+        $qr | Export-Csv -Path ".\Auror-Az-Role-Assignment-Report.csv" -NoTypeInformation -Append
+    }
 }
 
 # End of Script
