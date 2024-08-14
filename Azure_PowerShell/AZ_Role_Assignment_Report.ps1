@@ -28,7 +28,7 @@ $rmqr = 'AzureActivity
 | extend Operation = split(OperationNameValue,"/")
 | project TimeGenerated,InitiatedBy,Scope,PrincipalId,PrincipalType,RoleID=RoleId[6],Operation= Operation[2]'
 
-#Please replace with appropriate workspace ID
+#Executing the Log Analytics queries
 $addqueryResults = Invoke-AzOperationalInsightsQuery -WorkspaceId "b316f85a-19b4-42ab-bb06-9cfbef44826d" -Query $addqr
 $rmqueryResults = Invoke-AzOperationalInsightsQuery -WorkspaceId "b316f85a-19b4-42ab-bb06-9cfbef44826d" -Query $rmqr
 
@@ -53,7 +53,7 @@ else{
 $qr | Add-Member -MemberType NoteProperty -Name 'Role' -Value $rd.Name
 $qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.DisplayName
 
-#Replace with appropriate path
+#Exporting the results to a CSV file
 $qr | Export-Csv -Path ".\Auror-Az-Role-Assignment-Report.csv" -NoTypeInformation -Append
 }
 
@@ -74,7 +74,7 @@ else{
 $qr | Add-Member -MemberType NoteProperty -Name 'Role' -Value $rd.Name
 $qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.DisplayName
 
-#Replace with appropriate path
+#Exporting the results to a CSV file
 $qr | Export-Csv -Path ".\Auror-Az-Role-Assignment-Report.csv" -NoTypeInformation -Append
 }
 
