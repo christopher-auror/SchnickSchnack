@@ -1,10 +1,22 @@
-# Define the path of the CSV file to store the Role Assignment Report
-$csvPath = ".\Auror-Az-Role-Assignment-Report.csv"
-# Define the Log Analytics workspace ID
-$workspaceId = "b316f85a-19b4-42ab-bb06-9cfbef44826d"
+param(
+    [Parameter(Mandatory)]
+    [string]
+    $SubscriptionId = "078fbcee-c3c5-464f-a52c-3a971648cdbc",
+
+    [Parameter(Mandatory)]
+    [string]
+    $csvPath = ".\Auror-Az-Role-Assignment-Report.csv",
+
+    [Parameter(Mandatory)]
+    [string]
+    $workspaceId = "b316f85a-19b4-42ab-bb06-9cfbef44826d"
+)
 
 #Connect to managed identity in our Azure tenant
-# Connect-AzAccount -Identity
+Connect-AzAccount -Identity -ErrorAction Stop
+
+#Set the active subscription
+Set-AzContext -SubscriptionId $SubscriptionId -ErrorAction Stop
 
 #Log Analytics query for retrieving Role Assignment addition activities for the past 2 days
     $addqr = 'AzureActivity
@@ -82,5 +94,3 @@ $qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.D
 #Exporting the results to a CSV file
 $qr | Export-Csv -Path $csvPath -NoTypeInformation -Append
 }
-
-# End of Script
