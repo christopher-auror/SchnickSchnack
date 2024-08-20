@@ -60,48 +60,54 @@ catch {
     exit 1
 }
 
-#Isolating Log Analytics query results
-$addqrs = $addqueryResults.Results
-$rmqrs = $rmqueryResults.Results
+try {
+    # Isolating Log Analytics query results
+    $addqrs = $addqueryResults.Results
+    $rmqrs = $rmqueryResults.Results
 
-#For each add query result find user/group name and role name to append into the CSV report
-foreach ($qr in $addqrs)
-{
-$rd = Get-AzRoleDefinition -Id $qr.RoleID
-if($qr.PrincipalType -eq 'User')
-    {     
-        $prncpl = Get-AzADUser -ObjectId $qr.PrincipalId
-    }
-elseif($qr.PrincipalType -eq 'Group'){
-        $prncpl = Get-AzADGroup -ObjectId $qr.PrincipalId
-    }
-else{
-        $prncpl = Get-AzADServicePrincipal -ObjectId $qr.PrincipalId
-    }
-$qr | Add-Member -MemberType NoteProperty -Name 'Role' -Value $rd.Name
-$qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.DisplayName
+    # For each add query result find user/group name and role name to append into the CSV report
+    foreach ($qr in $addqrs)
+    {
+        $rd = Get-AzRoleDefinition -Id $qr.RoleID
+        if($qr.PrincipalType -eq 'User')
+        {     
+            $prncpl = Get-AzADUser -ObjectId $qr.PrincipalId
+        }
+        elseif($qr.PrincipalType -eq 'Group'){
+            $prncpl = Get-AzADGroup -ObjectId $qr.PrincipalId
+        }
+        else{
+            $prncpl = Get-AzADServicePrincipal -ObjectId $qr.PrincipalId
+        }
+        $qr | Add-Member -MemberType NoteProperty -Name 'Role' -Value $rd.Name
+        $qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.DisplayName
 
-#Exporting the results to a CSV file
-$qr | Export-Csv -Path $csvPath -NoTypeInformation -Append
+        # Exporting the results to a CSV file
+        $qr | Export-Csv -Path $csvPath -NoTypeInformation -Append
+    }
+
+    # For each remove query result find user/group name and role name to append into the CSV report
+    foreach ($qr in $rmqrs)
+    {
+        $rd = Get-AzRoleDefinition -Id $qr.RoleID
+        if($qr.PrincipalType -eq 'User')
+        {     
+            $prncpl = Get-AzADUser -ObjectId $qr.PrincipalId
+        }
+        elseif($qr.PrincipalType -eq 'Group'){
+            $prncpl = Get-AzADGroup -ObjectId $qr.PrincipalId
+        }
+        else{
+            $prncpl = Get-AzADServicePrincipal -ObjectId $qr.PrincipalId
+        }
+        $qr | Add-Member -MemberType NoteProperty -Name 'Role' -Value $rd.Name
+        $qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.DisplayName
+
+        # Exporting the results to a CSV file
+        $qr | Export-Csv -Path $csvPath -NoTypeInformation -Append
+    }
 }
-
-#For each remove query result find user/group name and role name to append into the CSV report
-foreach ($qr in $rmqrs)
-{
-$rd = Get-AzRoleDefinition -Id $qr.RoleID
-if($qr.PrincipalType -eq 'User')
-    {     
-        $prncpl = Get-AzADUser -ObjectId $qr.PrincipalId
-    }
-elseif($qr.PrincipalType -eq 'Group'){
-        $prncpl = Get-AzADGroup -ObjectId $qr.PrincipalId
-    }
-else{
-        $prncpl = Get-AzADServicePrincipal -ObjectId $qr.PrincipalId
-    }
-$qr | Add-Member -MemberType NoteProperty -Name 'Role' -Value $rd.Name
-$qr | Add-Member -MemberType NoteProperty -Name 'PrincipalName' -Value $prncpl.DisplayName
-
-#Exporting the results to a CSV file
-$qr | Export-Csv -Path $csvPath -NoTypeInformation -Append
+catch {
+    Write-Error "An error occurred while processing the results: $_"
+    exit 1
 }
