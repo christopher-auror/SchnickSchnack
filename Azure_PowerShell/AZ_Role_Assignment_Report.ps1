@@ -1,5 +1,5 @@
 #Login Azure Account
-# Add-AzAccount
+Connect-AzAccount
 
 #Log Analytics query for retrieving Role Assignment addition activities for the past 2 days
     $addqr = 'AzureActivity
