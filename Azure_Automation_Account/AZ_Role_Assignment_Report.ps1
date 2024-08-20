@@ -23,7 +23,7 @@ try {
     # Set the active subscription
     Set-AzContext -SubscriptionId $SubscriptionId -ErrorAction Stop
 
-    # Log Analytics query for retrieving Role Assignment addition activities for the past 2 days
+    # Log Analytics query for retrieving Role Assignment addition activities for the past 1 day
     $addqr = 'AzureActivity
     | where TimeGenerated > ago(1d)
     | where CategoryValue =~ "Administrative" and  OperationNameValue =~ "Microsoft.Authorization/roleAssignments/write" and ActivityStatusValue =~ "Start"
@@ -36,7 +36,7 @@ try {
     | extend Operation = split(OperationNameValue,"/")
     | project TimeGenerated,InitiatedBy,Scope,PrincipalId,PrincipalType,RoleID=RoleId[4],Operation= Operation[2]'
 
-    # Log Analytics query for retrieving Role Assignment removal activities for the past 2 days
+    # Log Analytics query for retrieving Role Assignment removal activities for the past 1 day
     $rmqr = 'AzureActivity
     | where TimeGenerated > ago(1d)
     | where CategoryValue =~ "Administrative" and OperationNameValue =~ "Microsoft.Authorization/roleAssignments/delete" and (ActivityStatusValue =~ "Success")
