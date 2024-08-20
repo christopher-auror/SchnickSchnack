@@ -25,7 +25,7 @@ try {
 
     # Log Analytics query for retrieving Role Assignment addition activities for the past 2 days
     $addqr = 'AzureActivity
-    | where TimeGenerated > ago(2d)
+    | where TimeGenerated > ago(1d)
     | where CategoryValue =~ "Administrative" and  OperationNameValue =~ "Microsoft.Authorization/roleAssignments/write" and ActivityStatusValue =~ "Start"
     | extend RoleDefinition = extractjson("$.Properties.RoleDefinitionId",tostring(Properties_d.requestbody),typeof(string))
     | extend PrincipalId = extractjson("$.Properties.PrincipalId",tostring(Properties_d.requestbody),typeof(string))
@@ -38,7 +38,7 @@ try {
 
     # Log Analytics query for retrieving Role Assignment removal activities for the past 2 days
     $rmqr = 'AzureActivity
-    | where TimeGenerated > ago(2d)
+    | where TimeGenerated > ago(1d)
     | where CategoryValue =~ "Administrative" and OperationNameValue =~ "Microsoft.Authorization/roleAssignments/delete" and (ActivityStatusValue =~ "Success")
     | extend RoleDefinition = extractjson("$.properties.roleDefinitionId",tostring(Properties_d.responseBody),typeof(string))
     | extend PrincipalId = extractjson("$.properties.principalId",tostring(Properties_d.responseBody),typeof(string))
