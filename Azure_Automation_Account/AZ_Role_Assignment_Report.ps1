@@ -9,7 +9,11 @@ param(
 
     [Parameter(Mandatory)]
     [string]
-    $workspaceId = "b316f85a-19b4-42ab-bb06-9cfbef44826d"
+    $workspaceId = "b316f85a-19b4-42ab-bb06-9cfbef44826d",
+
+    [Parameter(Mandatory)]
+    [string]
+    $storageAccountName ="cloudshellchristopher"
 )
 
 try {
@@ -106,6 +110,13 @@ try {
         # Exporting the results to a CSV file
         $qr | Export-Csv -Path $csvPath -NoTypeInformation -Append
     }
+
+    # Upload the CSV file to the specified Azure Storage Account
+    $storageContext = New-AzStorageContext -StorageAccountName $storageAccountName
+    Set-AzStorageBlobContent -Context $storageContext -Container "reports" -File $csvPath -Blob "Auror-Az-Role-Assignment-Report.csv"
+
+    # Print completion message
+    Write-Host "Assessment has been completed and saved."
 }
 catch {
     Write-Error "An error occurred while processing the results: $_"
