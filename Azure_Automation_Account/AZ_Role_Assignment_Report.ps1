@@ -113,7 +113,7 @@ try {
 
     # Upload the CSV file to the specified Azure Storage Account
     $storageContext = New-AzStorageContext -StorageAccountName $storageAccountName
-    Set-AzStorageBlobContent -Context $storageContext -Container "reports" -File $csvPath -Blob "Auror-Az-Role-Assignment-Report.csv"
+    Set-AzStorageBlobContent -Context $storageContext -Container "reports" -File $csvPath -Blob "Auror-Az-Role-Assignment-Report.csv" -Force
 
     # Print completion message
     Write-Host "Assessment has been completed and saved."
