@@ -23,7 +23,7 @@ try {
     # Set the active subscription
     Set-AzContext -SubscriptionId $SubscriptionId -ErrorAction Stop
 
-    # Log Analytics query for retrieving Role Assignment addition activities for the past 1 day
+    # Log Analytics query for retrieving Role Assignment addition activities for the past one day
     $addqr = 'AzureActivity
     | where TimeGenerated > ago(1d)
     | where CategoryValue =~ "Administrative" and  OperationNameValue =~ "Microsoft.Authorization/roleAssignments/write" and ActivityStatusValue =~ "Start"
@@ -36,7 +36,7 @@ try {
     | extend Operation = split(OperationNameValue,"/")
     | project TimeGenerated,InitiatedBy,Scope,PrincipalId,PrincipalType,RoleID=RoleId[4],Operation= Operation[2]'
 
-    # Log Analytics query for retrieving Role Assignment removal activities for the past 1 day
+    # Log Analytics query for retrieving Role Assignment removal activities for the past one day
     $rmqr = 'AzureActivity
     | where TimeGenerated > ago(1d)
     | where CategoryValue =~ "Administrative" and OperationNameValue =~ "Microsoft.Authorization/roleAssignments/delete" and (ActivityStatusValue =~ "Success")
@@ -113,7 +113,7 @@ try {
 
     # Upload the CSV file to the specified Azure Storage Account
     $storageContext = New-AzStorageContext -StorageAccountName $storageAccountName
-    Set-AzStorageBlobContent -Context $storageContext -Container "reports" -File $csvPath -Blob "Auror-Az-Role-Assignment-Report.csv" -Force
+    Set-AzStorageBlobContent -Context $storageContext -Container "reports" -File $csvPath -Blob "Auror-Az-Role-Assignment-Report.csv"
 
     # Print completion message
     Write-Host "Assessment has been completed and saved."
