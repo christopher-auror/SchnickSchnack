@@ -1,11 +1,19 @@
-# Define the path of the CSV file to store the Role Assignment Report
-$csvPath = "Auror-Az-Role-Assignment-Report.csv"
-# Define the Log Analytics workspace ID
-$workspaceId = "b316f85a-19b4-42ab-bb06-9cfbef44826d"
-# Define the storage account details
-$storageAccountName = "cloudshellchristopher"
-$storageContainerName = "reports"
-$storageBlobName = "Auror-Az-Role-Assignment-Report.csv"
+param (
+    [Parameter(Mandatory=$true)]
+    [string]$workspaceId = "b316f85a-19b4-42ab-bb06-9cfbef44826d",
+
+    [Parameter(Mandatory=$true)]
+    [string]$storageAccountName = "cloudshellchristopher",
+
+    [Parameter(Mandatory=$true)]
+    [string]$storageContainerName = "auror-azure-reports",
+
+    [Parameter(Mandatory=$true)]
+    [string]$csvPath = "Role-Assignment-Report.csv",
+
+    [Parameter(Mandatory=$true)]
+    [string]$storageBlobName = "Role-Assignment-Report.csv"
+)
 
 # Connect to managed identity in our Azure tenant
 Connect-AzAccount -Identity -ErrorAction Stop
