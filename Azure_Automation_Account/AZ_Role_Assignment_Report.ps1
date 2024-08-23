@@ -51,6 +51,9 @@ $rmResults = Invoke-AzOperationalInsightsQuery -WorkspaceId $workspaceId -Query 
 # Combine the results
 $combinedResults = $addResults.Results + $rmResults.Results
 
+# Count the number of role assignments
+$roleAssignmentCount = $combinedResults.Count
+
 # Convert the results to CSV format
 $combinedResults | Export-Csv -Path $csvPath -NoTypeInformation
 
@@ -58,5 +61,5 @@ $combinedResults | Export-Csv -Path $csvPath -NoTypeInformation
 $storageContext = New-AzStorageContext -StorageAccountName $storageAccountName -UseConnectedAccount
 Set-AzStorageBlobContent -File $csvPath -Container $storageContainerName -Blob $storageBlobName -Context $storageContext -Force
 
-# Print the success message
-Write-Output 'Role Assignment Report has been generated and uploaded to Azure Storage Account'
+# Print the success message with the count of role assignments
+Write-Output "Role Assignment Report has been generated and uploaded to Azure Storage Account. Total role assignments found: $roleAssignmentCount"
