@@ -6,14 +6,13 @@ param (
     [string]$storageAccountName = "cloudshellchristopher",
 
     [Parameter(Mandatory=$true)]
-    [string]$storageContainerName = "auror-azure-reports",
-
-    [Parameter(Mandatory=$true)]
-    [string]$csvPath = "Role-Assignment-Report.csv",
-
-    [Parameter(Mandatory=$true)]
-    [string]$storageBlobName = "Role-Assignment-Report.csv"
+    [string]$storageContainerName = "auror-azure-reports"
 )
+
+[string]$csvPath = "Role-Assignment-Report.csv"
+[string]$storageBlobName = "Role-Assignment-Report.csv"
+
+# Rest of your script
 
 # Connect to managed identity in our Azure tenant
 Connect-AzAccount -Identity -ErrorAction Stop
