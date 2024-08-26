@@ -9,7 +9,7 @@ resources
 | project name, diskState = properties.diskState, lastUpdateTime = format_datetime(todatetime(properties.LastOwnershipUpdateTime), "dd-MM-yyyy")
 '
 
-# Loop through each disk and delete it
+# Loop through each disk and output the disk information
 foreach ($disk in $disksToBeRemoved) {
     # Output the disk information for verification
     Write-Output "Disk: $($disk.name), Last Update: $($disk.lastUpdateTime)"
