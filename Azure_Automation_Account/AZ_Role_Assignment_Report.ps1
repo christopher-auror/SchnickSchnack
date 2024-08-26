@@ -12,14 +12,18 @@ param (
 [string]$csvPath = "Role-Assignment-Report.csv"
 [string]$storageBlobName = "Role-Assignment-Report.csv"
 
-# Rest of your script
-
 # Connect to managed identity in our Azure tenant
-Connect-AzAccount -Identity -ErrorAction Stop
+try {
+    Connect-AzAccount -Identity -ErrorAction Stop
+    Write-Output "Successfully connected to Azure account."
+} catch {
+    Write-Error "Failed to connect to Azure account: $_"
+    exit 1
+}
 
-# Log Analytics query for retrieving Role Assignment addition activities for the past 2 days
+# Log Analytics query for retrieving Role Assignment addition activities for the past one day
 $addqr = 'AzureActivity
-| where TimeGenerated > ago(2d)
+| where TimeGenerated > ago(1d)
 | where CategoryValue =~ "Administrative" and  OperationNameValue =~ "Microsoft.Authorization/roleAssignments/write" and ActivityStatusValue =~ "Start"
 | extend RoleDefinition = extractjson("$.Properties.RoleDefinitionId",tostring(Properties_d.requestbody),typeof(string))
 | extend PrincipalId = extractjson("$.Properties.PrincipalId",tostring(Properties_d.requestbody),typeof(string))
@@ -30,9 +34,9 @@ $addqr = 'AzureActivity
 | extend Operation = split(OperationNameValue,"/")
 | project TimeGenerated,InitiatedBy,Scope,PrincipalId,PrincipalType,RoleID=RoleId[4],Operation= Operation[2]'
 
-# Log Analytics query for retrieving Role Assignment removal activities for the past 2 days
+# Log Analytics query for retrieving Role Assignment removal activities for the past one day
 $rmqr = 'AzureActivity
-| where TimeGenerated > ago(2d)
+| where TimeGenerated > ago(1d)
 | where CategoryValue =~ "Administrative" and OperationNameValue =~ "Microsoft.Authorization/roleAssignments/delete" and (ActivityStatusValue =~ "Success")
 | extend RoleDefinition = extractjson("$.properties.roleDefinitionId",tostring(Properties_d.responseBody),typeof(string))
 | extend PrincipalId = extractjson("$.properties.principalId",tostring(Properties_d.responseBody),typeof(string))
@@ -56,9 +60,16 @@ $roleAssignmentCount = $combinedResults.Count
 # Convert the results to CSV format
 $combinedResults | Export-Csv -Path $csvPath -NoTypeInformation
 
-# Upload the CSV file to the Azure Storage account
-$storageContext = New-AzStorageContext -StorageAccountName $storageAccountName -UseConnectedAccount
-Set-AzStorageBlobContent -File $csvPath -Container $storageContainerName -Blob $storageBlobName -Context $storageContext -Force
+try {
+    # Upload the CSV file to the Azure Storage account
+    $storageContext = New-AzStorageContext -StorageAccountName $storageAccountName -UseConnectedAccount
+    Set-AzStorageBlobContent -File $csvPath -Container $storageContainerName -Blob $storageBlobName -Context $storageContext -Force
+
+    Write-Output "CSV file uploaded successfully."
+} catch {
+    Write-Error "Failed to upload CSV file to Azure Storage account: $_"
+    exit 1
+}
 
 # Print the success message with the count of role assignments
 Write-Output "Role Assignment Report has been generated and uploaded to Azure Storage Account. Total role assignments found: $roleAssignmentCount"
