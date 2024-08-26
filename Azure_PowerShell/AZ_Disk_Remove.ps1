@@ -6,6 +6,7 @@ $disksToBeRemoved = Search-AzGraph -Query '
 resources
 | where type == "microsoft.compute/disks"
 | where todatetime(properties.LastOwnershipUpdateTime) < ago(90d)
+| where properties.diskState == "Unattached"
 | project name, diskState = properties.diskState, lastUpdateTime = format_datetime(todatetime(properties.LastOwnershipUpdateTime), "dd-MM-yyyy")
 '
 
