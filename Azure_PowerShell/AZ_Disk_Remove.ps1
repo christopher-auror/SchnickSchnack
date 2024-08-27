@@ -1,5 +1,5 @@
 # Authenticate to Azure
-# Connect-AzAccount
+Connect-AzAccount
 
 # Define the query to find disks that haven't had ownership updates in the last 90 days
 $disksToBeRemoved = Search-AzGraph -Query '
