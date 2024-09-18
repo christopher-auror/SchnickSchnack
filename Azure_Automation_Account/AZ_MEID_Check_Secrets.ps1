@@ -8,7 +8,7 @@ try {
 }
 
 # Secret expiration date filter
-$LimitExpirationDays = 120
+$LimitExpirationDays = 180
 
 # Retrieving the list of secrets that expires in the above days
 $SecretsToExpire = Get-AzADApplication | ForEach-Object {
