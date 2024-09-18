@@ -1,21 +1,21 @@
 # Connect to managed identity in our Azure tenant
-try {
+<# try {
     Connect-AzAccount -Identity -ErrorAction Stop
     Write-Output "Successfully connected to Azure account."
 } catch {
     Write-Error "Failed to connect to Azure account: $_"
     exit 1
-}
+} #>
 
 # Secret expiration date filter
 $LimitExpirationDays = 180
 
-# Retrieving the list of secrets that expires in the above days
-$SecretsToExpire = Get-AzADApplication | ForEach-Object {
+#Retrieving the list of secrets that expires in the above days
+$SecretsToExpire = Get-AzureADApplication -All:$true | ForEach-Object {
     $app = $_
     @(
-        Get-EntraApplicationPasswordCredential -ObjectId $_.ObjectId
-        Get-EntraApplicationKeyCredential -ObjectId $_.ObjectId
+        Get-AzureADApplicationPasswordCredential -ObjectId $_.ObjectId
+        Get-AzureADApplicationKeyCredential -ObjectId $_.ObjectId
     ) | Where-Object {
         $_.EndDate -lt (Get-Date).AddDays($LimitExpirationDays)
     } | ForEach-Object {
@@ -33,7 +33,6 @@ $SecretsToExpire = Get-AzADApplication | ForEach-Object {
         }
     }
 }
- 
 # Gridview list
 # $SecretsToExpire | Out-GridView
 
