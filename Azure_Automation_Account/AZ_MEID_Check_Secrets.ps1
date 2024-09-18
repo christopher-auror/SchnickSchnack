@@ -11,7 +11,7 @@
 $LimitExpirationDays = 180
 
 #Retrieving the list of secrets that expires in the above days
-$SecretsToExpire = Get-AzureADApplication -All:$true | ForEach-Object {
+$SecretsToExpire = Get-AzureADApplication | ForEach-Object {
     $app = $_
     @(
         Get-AzureADApplicationPasswordCredential -ObjectId $_.ObjectId
