@@ -137,12 +137,12 @@ $assignments6 = @(
     @{ ResourceGroupName = "FawkesAppProdAu"; GroupId = "4430972c-c0be-4e98-82fb-12cfd4bed666"; GroupName = "Pulumi-Provisioner-FawkesProdAU" },
     @{ ResourceGroupName = "FawkesAppProdUk"; GroupId = "012c5b97-8bb6-4892-ad1f-7e01f7e1d4c2"; GroupName = "Pulumi-Provisioner-FawkesProdUK" },
     @{ ResourceGroupName = "FawkesAppProdUs"; GroupId = "6d6b7742-f29b-45cd-95cc-f58f4527087f"; GroupName = "Pulumi-Provisioner-FawkesProdUS" }
-    @{ ResourceGroupName = "FawkesAppQA"; GroupId = "428031b7-8675-4495-bb98-d8a9f56c1721"; GroupName = "PulumiProvisionerPreProd" },
-    @{ ResourceGroupName = "FawkesAppSandbox"; GroupId = "62972a88-e0e9-42f5-8d14-2f364bf24d41"; GroupName = "PulumiPreviewerProd" },
-    @{ ResourceGroupName = "FawkesAppProdNz"; GroupId = "62972a88-e0e9-42f5-8d14-2f364bf24d41"; GroupName = "PulumiPreviewerProd" },
-    @{ ResourceGroupName = "FawkesAppProdAu"; GroupId = "62972a88-e0e9-42f5-8d14-2f364bf24d41"; GroupName = "PulumiPreviewerProd" },
-    @{ ResourceGroupName = "FawkesAppProdUk"; GroupId = "62972a88-e0e9-42f5-8d14-2f364bf24d41"; GroupName = "PulumiPreviewerProd" },
-    @{ ResourceGroupName = "FawkesAppProdUs"; GroupId = "62972a88-e0e9-42f5-8d14-2f364bf24d41"; GroupName = "PulumiPreviewerProd" }
+    @{ ResourceGroupName = "FawkesAppQA"; GroupId = "3072906e-0ee5-43c9-a182-52af6061b4ca"; GroupName = "PulumiProvisionerPreProd" },
+    @{ ResourceGroupName = "FawkesAppSandbox"; GroupId = "104b6cbd-dc6e-4484-af51-d20d03d73e0c"; GroupName = "PulumiProvisionerProd" },
+    @{ ResourceGroupName = "FawkesAppProdNz"; GroupId = "104b6cbd-dc6e-4484-af51-d20d03d73e0c"; GroupName = "PulumiProvisionerProd" },
+    @{ ResourceGroupName = "FawkesAppProdAu"; GroupId = "104b6cbd-dc6e-4484-af51-d20d03d73e0c"; GroupName = "PulumiProvisionerProd" },
+    @{ ResourceGroupName = "FawkesAppProdUk"; GroupId = "104b6cbd-dc6e-4484-af51-d20d03d73e0c"; GroupName = "PulumiProvisionerProd" },
+    @{ ResourceGroupName = "FawkesAppProdUs"; GroupId = "104b6cbd-dc6e-4484-af51-d20d03d73e0c"; GroupName = "PulumiProvisionerProd" }
 )
 
 foreach ($assignment6 in $assignments6) {
