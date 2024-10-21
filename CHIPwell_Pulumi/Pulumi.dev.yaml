@@ -1,2 +1,3 @@
 config:
   azure-native:location: AustraliaEast
+  azure-native:subscriptionId: d0feba55-594c-4772-8ba8-536ea4f60743

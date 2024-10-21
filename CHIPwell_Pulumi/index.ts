@@ -3,11 +3,11 @@ import * as resources from "@pulumi/azure-native/resources";
 import * as storage from "@pulumi/azure-native/storage";
 
 // Create an Azure Resource Group
-const resourceGroup = new resources.ResourceGroup("resourceGroup");
+const resourceGroup = 'devChristopher';
 
 // Create an Azure resource (Storage Account)
 const storageAccount = new storage.StorageAccount("sa", {
-    resourceGroupName: resourceGroup.name,
+    resourceGroupName: resourceGroup,
     sku: {
         name: storage.SkuName.Standard_LRS,
     },
@@ -16,7 +16,7 @@ const storageAccount = new storage.StorageAccount("sa", {
 
 // Export the primary key of the Storage Account
 const storageAccountKeys = storage.listStorageAccountKeysOutput({
-    resourceGroupName: resourceGroup.name,
+    resourceGroupName: resourceGroup,
     accountName: storageAccount.name
 });
 
