@@ -1,7 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as resources from "@pulumi/azure-native/resources";
 import * as storage from "@pulumi/azure-native/storage";
-import "./RecoveryVault"; // Import the RecoveryVault module
+import "./RecoveryVault"; // Import the Recovery Vault module
 import "./vm"; // Import the VM module
 
 // Create an Azure Resource Group
