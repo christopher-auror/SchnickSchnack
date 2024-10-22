@@ -2,31 +2,9 @@ import * as pulumi from "@pulumi/pulumi";
 import * as resources from "@pulumi/azure-native/resources";
 import * as storage from "@pulumi/azure-native/storage";
 import "./RecoveryVault"; // Import the Recovery Vault module
-import "./vm"; // Import the VM module
+import "./vm"; // Import the Virtual Machine module
+import "./storage"; // Import the Storage Account module
 
-// Create an Azure Resource Group
+// Create or read an Azure Resource Group
 const resourceGroup = 'devChristopher';
 
-const config = new pulumi.Config();
-const enableSA = config.getBoolean("enableSA") ?? true;
-
-let sa;
-let storageAccountKeys;
-if (enableSA) {
-    // Create an Azure Storage Account
-    const storageAccount = new storage.StorageAccount("sa", {
-        resourceGroupName: resourceGroup,
-        sku: {
-            name: storage.SkuName.Standard_LRS,
-        },
-        kind: storage.Kind.StorageV2,
-    });
-
-    // Export the primary key of the Storage Account
-    storageAccountKeys = storage.listStorageAccountKeysOutput({
-        resourceGroupName: resourceGroup,
-        accountName: storageAccount.name
-    });
-}
-
-export const primaryStorageKey = enableSA && storageAccountKeys ? storageAccountKeys.keys[0].value : undefined;

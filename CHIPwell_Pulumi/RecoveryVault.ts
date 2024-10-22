@@ -1,6 +1,9 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as azure_native from "@pulumi/azure-native";
 
+// Create or read an Azure Resource Group
+const resourceGroup = 'devChristopher';
+
 const config = new pulumi.Config();
 const enableVault = config.getBoolean("enableVault") ?? true;
 
@@ -23,7 +26,7 @@ if (enableVault) {
             },
             publicNetworkAccess: azure_native.recoveryservices.PublicNetworkAccess.Enabled,
         },
-        resourceGroupName: "DevChristopher",
+        resourceGroupName: resourceGroup,
         sku: {
             name: azure_native.recoveryservices.SkuName.Standard,
         },
