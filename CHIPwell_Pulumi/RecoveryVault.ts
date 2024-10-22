@@ -5,7 +5,7 @@ import * as azure_native from "@pulumi/azure-native";
 const resourceGroup = 'devChristopher';
 
 const config = new pulumi.Config();
-const enableVault = config.getBoolean("enableVault") ?? true;
+const enableVault = config.getBoolean("enableVault") ?? false;
 
 let vault;
 if (enableVault) {

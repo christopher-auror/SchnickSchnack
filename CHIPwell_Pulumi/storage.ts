@@ -5,7 +5,7 @@ import * as storage from "@pulumi/azure-native/storage";
 const resourceGroup = 'devChristopher';
 
 const config = new pulumi.Config();
-const enableSA = config.getBoolean("enableSA") ?? true;
+const enableSA = config.getBoolean("enableSA") ?? false;
 
 let sa;
 let storageAccountKeys;
