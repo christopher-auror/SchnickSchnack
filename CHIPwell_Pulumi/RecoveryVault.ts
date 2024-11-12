@@ -30,7 +30,7 @@ if (enableVault) {
 
 // Create a Backup Policy for CHIPwell-VM
 if (vault) {
-    const protectedItem = new azure_native.recoveryservices.ProtectedItem("protectedItem", {
+    const protectedItem = new azure_native.recoveryservices.ProtectedItem("CHIPwell-VM", {
         containerName: `IaasVMContainer;iaasvmcontainerv2;${resourceGroup};CHIPwell-VM`,
         fabricName: "Azure",
         properties: {
@@ -41,5 +41,9 @@ if (vault) {
         protectedItemName: `VM;iaasvmcontainerv2;${resourceGroup};CHIPwell-VM`,
         resourceGroupName: resourceGroup,
         vaultName: vaultName,
-    });
+    },
+    {
+        dependsOn: [vault],
+    },
+);
 }
