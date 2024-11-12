@@ -7,7 +7,7 @@ const resourceGroup = 'devChristopher';
 const vaultName = 'CHIPwellVault';
 
 const config = new pulumi.Config();
-const enableVault = config.getBoolean("enableVault") ?? true;
+const enableVault = config.getBoolean("enableVault") ?? false;
 
 let vault;
 // Create a Recovery Services Vault
