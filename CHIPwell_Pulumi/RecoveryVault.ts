@@ -2,7 +2,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as recoveryservices from "@pulumi/azure-native/recoveryservices/v20240430preview";
 import * as azure_native from "@pulumi/azure-native";
 
-// Create or read an Azure Resource Group
+// Create or read an Azure Resource Group & Recovery Services Vault
 const resourceGroup = 'devChristopher';
 const vaultName = 'CHIPwellVault';
 
