@@ -1,9 +1,10 @@
 import * as pulumi from "@pulumi/pulumi";
-import * as azure_native from "@pulumi/azure-native"
 import * as recoveryservices from "@pulumi/azure-native/recoveryservices/v20240430preview";
+import * as azure_native from "@pulumi/azure-native";
 
 // Create or read an Azure Resource Group
 const resourceGroup = 'devChristopher';
+const vaultName = 'CHIPwellVault';
 
 const config = new pulumi.Config();
 const enableVault = config.getBoolean("enableVault") ?? true;
@@ -11,54 +12,34 @@ const enableVault = config.getBoolean("enableVault") ?? true;
 let vault;
 // Create a Recovery Services Vault
 if (enableVault) {
-    vault = new recoveryservices.Vault("vault", {
+    vault = new recoveryservices.Vault(vaultName, {
         identity: {
             type: recoveryservices.ResourceIdentityType.SystemAssigned,
         },
         location: "Australia East",
         properties: {
-            monitoringSettings: {
-                azureMonitorAlertSettings: {
-                    alertsForAllJobFailures: azure_native.recoveryservices.AlertsState.Enabled,
-                },
-                classicAlertSettings: {
-                    alertsForCriticalOperations: azure_native.recoveryservices.AlertsState.Disabled,
-                },
-            },
             publicNetworkAccess: azure_native.recoveryservices.PublicNetworkAccess.Enabled,
         },
         resourceGroupName: resourceGroup,
         sku: {
             name: recoveryservices.SkuName.Standard,
         },
-        vaultName: "CHIPWellVault",
+        vaultName: vaultName,
     });
 }
 
-// Create a Backup Policy
+// Create a Backup Policy for CHIPwell-VM
 if (vault) {
-    const backupPolicy = new recoveryservices.ProtectionPolicy("DailyPolicy", {
-        resourceGroupName: resourceGroup,
-        vaultName: vault.name,
+    const protectedItem = new azure_native.recoveryservices.ProtectedItem("protectedItem", {
+        containerName: `IaasVMContainer;iaasvmcontainerv2;${resourceGroup};CHIPwell-VM`,
+        fabricName: "Azure",
         properties: {
-                backupManagementType: "AzureIaasVM",
-                instantRPDetails: {},
-                schedulePolicy: {
-                    schedulePolicyType: "SimpleSchedulePolicy",
-                    scheduleRunFrequency: "Daily",
-                    scheduleRunTimes: ["2021-09-01T00:00:00Z"],
-                    scheduleWeeklyFrequency: 0,
-                },
-                tieringPolicy: {
-                    ArchivedRP: {
-                        tieringMode: "DoNotTier",
-                        duration: 0,
-                        durationType: "Invalid"
-                    },
-                },
-                instantRpRetentionRangeInDays:3,
-                timeZone: "UTC",
-                    protectedItemsCount: 0,
-                },
-            });
-        }
+            policyId: `/subscriptions/d0feba55-594c-4772-8ba8-536ea4f60743/resourceGroups/${resourceGroup}/providers/Microsoft.RecoveryServices/vaults/${vaultName}/backupPolicies/DefaultPolicy`,
+            protectedItemType: "Microsoft.Compute/virtualMachines",
+            sourceResourceId: `/subscriptions/d0feba55-594c-4772-8ba8-536ea4f60743/resourceGroups/${resourceGroup}/providers/Microsoft.Compute/virtualMachines/CHIPwell-VM`,
+        },
+        protectedItemName: `VM;iaasvmcontainerv2;${resourceGroup};CHIPwell-VM`,
+        resourceGroupName: resourceGroup,
+        vaultName: vaultName,
+    });
+}
